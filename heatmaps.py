@@ -49,11 +49,15 @@ def get_heatmap(user, base_url, discover_args, out_folder_path, layer):
 if __name__ == '__main__':
 
     #: Zoom: output scale (15 = ~1km squares)
-    #: minzoom: get requests at this level and lower (18 = 18, 19, 20)
-    discover_args = {'zoom': 15, 'prefix': '02'}
+    #: minzoom: limits the zoom levels, some how.
+    #: Prefix: The first few characters in a Bing quadkey, where each place in the number represents a deeper zoom
+    #:      level (ie, 021 is tile 1 of tile 2 of tile 0)
+    #:      https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system
+    #:      We need 02, because the state is split by 021 and 023, and it doesn't look like you can send multiple
+    discover_args = {'zoom': 15}
     layer = 'utah'
     out_folder_path = Path(r'c:\temp\discover_heatmaps')
-    discover_login_user = ''
+    discover_login_user = ''  #: set this to your Discover admin user name
     if layer == 'all':
         base_url = 'https://discover.agrc.utah.gov/heatmap/api'
     else:
