@@ -39,7 +39,7 @@ def get_heatmap(user, base_url, discover_args, out_folder_path, layer):
     utah_only = gpd.clip(full_response, state_boundary[state_boundary['state'] == 'Utah'])
 
     now = datetime.now().strftime('%Y%m%d-%H%M%S')
-    shapefile_path = out_folder_path / f'{layer}_{discover_args["zoom"]}_{now}.shp'
+    shapefile_path = out_folder_path / f'{layer}_{discover_args["zoom"]}-{discover_args["minzoom"]}_{now}.shp'
 
     print(f'Saving to {shapefile_path}...')
     out_folder_path.mkdir(exist_ok=True)
@@ -49,12 +49,12 @@ def get_heatmap(user, base_url, discover_args, out_folder_path, layer):
 if __name__ == '__main__':
 
     #: Zoom: output scale (15 = ~1km squares)
-    #: minzoom: limits the zoom levels, some how.
+    #: minzoom: Only report usage from this scale and lower (ie, minzoom=18 returns data for levels 18, 19, & 20).
     #: Prefix: The first few characters in a Bing quadkey, where each place in the number represents a deeper zoom
     #:      level (ie, 021 is tile 1 of tile 2 of tile 0)
     #:      https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system
-    #:      We need 02, because the state is split by 021 and 023, and it doesn't look like you can send multiple
-    discover_args = {'zoom': 15}
+    #:      We need 02, because the state is split by 021 and 023, and it doesn't look like you can send multiples
+    discover_args = {'zoom': 15, 'minzoom': 18}
     layer = 'utah'
     out_folder_path = Path(r'c:\temp\discover_heatmaps')
     discover_login_user = ''  #: set this to your Discover admin user name
