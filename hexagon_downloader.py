@@ -6,9 +6,7 @@ Downloads the files listed in csv_path to out_dir and unzips them to unzip_dir. 
 To use, modify the csv_path, out_dir, and unzip_dir variables and then call the script from the command line.
 """
 
-import csv
 import datetime
-import getpass
 import os
 import requests
 import sys
@@ -150,13 +148,3 @@ if __name__ == '__main__':
 
     print(f'\nExtracting to {unzip_dir}...')
     extract_files(out_dir, unzip_dir)
-
-#: Provo canyon: 6224 12365
-#: Hobble creek: 6231 12386
-#: South:        6202 12413
-#: x: left to right
-#: y: top to bottom
-#: min x:   6202
-#: max x:   6231
-#: min y:   12365
-#: max y:   12413
