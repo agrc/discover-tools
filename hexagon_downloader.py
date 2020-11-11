@@ -121,30 +121,40 @@ if __name__ == '__main__':
     #: Rough starting assumption of 15 seconds; will differ based on speeds
     time_deltas = [datetime.timedelta(seconds=15)]
 
+    #: Log any failures
+    failed_links = []
+
     for link in all_links:
 
-        start = datetime.datetime.now()
-        average_time = sum(time_deltas, datetime.timedelta(0)) / len(time_deltas)
-        remaining_items = len(all_links) - tile_counter + 1
-        remaining_time = str(average_time * remaining_items).split('.', 2)[0]
+        try:
+            start = datetime.datetime.now()
+            average_time = sum(time_deltas, datetime.timedelta(0)) / len(time_deltas)
+            remaining_items = len(all_links) - tile_counter + 1
+            remaining_time = str(average_time * remaining_items).split('.', 2)[0]
 
-        pieces = link.split('/')
-        x = pieces[-2]
-        y = pieces[-1]
-        z = pieces[-3]
-        layer = pieces[-5]
+            pieces = link.split('/')
+            x = pieces[-2]
+            y = pieces[-1]
+            z = pieces[-3]
+            layer = pieces[-5]
 
-        filename = f'{layer}_x{x}_y{y}_z{z}.{extension}'
-        hex_out = out_dir / filename
-        postfix = f'\t{filename}, {tile_counter+1} of {len(all_links)}, {remaining_time} rem. (rough)'
+            filename = f'{layer}_x{x}_y{y}_z{z}.{extension}'
+            hex_out = out_dir / filename
+            postfix = f'\t{filename}, {tile_counter+1} of {len(all_links)}, {remaining_time} rem. (rough)'
 
-        progbar(tile_counter, len(all_links), postfix)
-        download(link, hex_out)
-        time_deltas.append(datetime.datetime.now() - start)
+            progbar(tile_counter, len(all_links), postfix)
+            download(link, hex_out)
+            time_deltas.append(datetime.datetime.now() - start)
 
-        tile_counter += 1
+            tile_counter += 1
 
-    progbar(len(all_links), len(all_links), postfix)
+        except Exception as e:
+            failed_links.append(link)
+
+    if failed_links:
+        print('Failed downloads:')
+        for link in failed_links:
+            print(link)
 
     print(f'\nExtracting to {unzip_dir}...')
     extract_files(out_dir, unzip_dir)
