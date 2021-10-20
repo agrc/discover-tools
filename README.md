@@ -4,7 +4,7 @@ Random scripts for interacting with Discover
 
 ## hexagon_downloader.py
 
-Download Hexagon imagery with your own quadword.
+Download 30cm Hexagon imagery with your own quadword.
 
 Builds the proper download links based on a bounding rectangle, downloads the zip files, and then extracts them to a specified folder.
 
