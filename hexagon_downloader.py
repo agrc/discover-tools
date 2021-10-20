@@ -152,9 +152,10 @@ if __name__ == '__main__':
             failed_links.append(link)
 
     if failed_links:
-        print('Failed downloads:')
+        print('\n\nFailed downloads:')
         for link in failed_links:
             print(link)
+        print('\n\n')
 
     print(f'\nExtracting to {unzip_dir}...')
     extract_files(out_dir, unzip_dir)
