@@ -1,9 +1,10 @@
 """
 hexagon_downloader.py
 
-Downloads the files listed in csv_path to out_dir and unzips them to unzip_dir. csv_path should have a header and format of "url,extension". 
+Downloads the hexagon imagery based on the bounding box specified and extracts the zip files to the specified folder.
 
-To use, modify the csv_path, out_dir, and unzip_dir variables and then call the script from the command line.
+To use, modify the quad_word, out_dir, unzip_dir, and min/max_x/y variables and then call the script from the command 
+line.
 """
 
 import datetime
@@ -101,25 +102,25 @@ if __name__ == '__main__':
     out_dir = Path(r'c:/temp/discover_downloads/downloads')
     unzip_dir = Path(r'c:/temp/discover_downloads/unzipped')
 
-    min_x = 6202
-    max_x = 6231
-    min_y = 12365
-    max_y = 12413
+    min_x = 6199
+    max_x = 6200
+    min_y = 12311
+    max_y = 12313
 
     extension = 'zip'
 
     out_dir.mkdir(parents=True, exist_ok=True)
     unzip_dir.mkdir(parents=True, exist_ok=True)
 
-    base_url = f'https://discover.agrc.utah.gov/login/path/{quad_word}/footprint/30cm_hexagon_utah/hx/15'
+    base_url = f'https://discover.agrc.utah.gov/login/path/{quad_word}/footprint/15cm_hexagon_utah/hx/15'
 
     all_links = [f'{base_url}/{x}/{y}' for x in range(min_x, max_x + 1) for y in range(min_y, max_y + 1)]
 
     print(f'Downloading {len(all_links)} file{"s" if len(all_links) > 1 else ""} to {out_dir}...')
     tile_counter = 0
 
-    #: Rough starting assumption of 15 seconds; will differ based on speeds
-    time_deltas = [datetime.timedelta(seconds=15)]
+    #: Conservative assumption of 30 seconds; will differ based on speeds
+    time_deltas = [datetime.timedelta(seconds=30)]
 
     #: Log any failures
     failed_links = []
