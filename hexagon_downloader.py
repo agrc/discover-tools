@@ -98,7 +98,7 @@ def extract_files(source_dir, unzip_dir):
 
 
 if __name__ == "__main__":
-    quad_word = "your_quad_word_here"
+    quad_word = "your-quad-word-here"
 
     out_dir = Path(r"c:/temp/discover_downloads/downloads")
     unzip_dir = Path(r"c:/temp/discover_downloads/unzipped")
